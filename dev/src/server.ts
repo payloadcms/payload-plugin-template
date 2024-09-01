@@ -1,3 +1,4 @@
+import type { Server } from 'http'
 import express from 'express'
 import payload from 'payload'
 import { InitOptions } from 'payload/config'
@@ -23,7 +24,13 @@ export const start = async (args?: Partial<InitOptions>) => {
 
   // Add your own express routes here
 
-  app.listen(3000)
+  return new Promise<Server>(resolve => {
+    const server = app.listen(3000, () => {
+      resolve(server)
+    })
+  })
 }
 
-start()
+if (require.main === module) {
+  start()
+}
