@@ -1,11 +1,11 @@
-import { buildConfig } from 'payload/config';
-import path from 'path';
-import Users from './collections/Users';
-import Examples from './collections/Examples';
+import { buildConfig } from 'payload/config'
+import path from 'path'
+import Users from './collections/Users'
+import Examples from './collections/Examples'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { webpackBundler } from '@payloadcms/bundler-webpack'
 import { slateEditor } from '@payloadcms/richtext-slate'
-import { samplePlugin } from '../../src/index'
+import { samplePlugin } from '../../dist'
 
 export default buildConfig({
   admin: {

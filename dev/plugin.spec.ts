@@ -7,19 +7,27 @@ describe('Plugin tests', () => {
   let server: Server
 
   beforeAll(async () => {
-    await start({ local: true })
-  })
+    server = await start()
+    // Allow Payload to fully start
+    await new Promise(resolve => setTimeout(resolve, 1000))
+  }, 30000)
 
   afterAll(async () => {
+    server.close()
     await mongoose.connection.dropDatabase()
     await mongoose.connection.close()
-    server.close()
-  })
+  }, 10000)
 
   // Add tests to ensure that the plugin works as expected
 
   // Example test to check for seeded data
   it('seeds data accordingly', async () => {
+    await payload.create({
+      collection: 'new-collection',
+      data: {
+        title: 'Seeded title',
+      },
+    })
     const newCollectionQuery = await payload.find({
       collection: 'new-collection',
       sort: 'createdAt',
