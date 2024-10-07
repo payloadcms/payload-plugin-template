@@ -27,11 +27,14 @@
     "payload": "^3.0.0-beta.111"
   },
   "dependencies": {
+    "@payloadcms/ui": "3.0.0-beta.111",
     "react": "19.0.0-rc-3edc000d-20240926",
     "react-dom": "19.0.0-rc-3edc000d-20240926"
   },
   "devDependencies": {
     "@payloadcms/eslint-config": "3.0.0-beta.97",
+    "@types/react": "npm:types-react@19.0.0-rc.1",
+    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
     "copyfiles": "^2.4.1",
     "next": "15.0.0-canary.173",
     "payload": "3.0.0-beta.111",
