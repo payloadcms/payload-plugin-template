@@ -1,23 +1,24 @@
 {
   "compilerOptions": {
+    "composite": true,
+    "declarationDir": "./dist",
+    "outDir": "./dist",
+    "rootDir": "./src",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
     "target": "es5",
-    "outDir": "./dist",
     "allowJs": true,
-    "module": "commonjs",
+    "module": "NodeNext",
     "sourceMap": true,
-    "jsx": "react",
     "esModuleInterop": true,
     "declaration": true,
-    "declarationDir": "./dist",
     "skipLibCheck": true,
-    "strict": true,
+    "strict": true
   },
   "include": [
-    "src/**/*",
-  ],
+    "src/**/*"
+  ]
 }
