@@ -1,61 +1,74 @@
 {
-  "name": "@payloadcms/payload-plugin-template",
-  "version": "0.0.0=1",
-  "type": "module",
+  "name": "payload-plugin-template",
+  "version": "3.0.0-beta.0",
   "homepage:": "https://payloadcms.com",
-  "repository": "git@github.com:payloadcms/payload-plugin-template.git",
-  "description": "Blank plugin template for Payload",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "keywords": [
-    "payload",
-    "cms",
-    "plugin",
-    "typescript",
-    "react",
-    "template"
-  ],
-  "scripts": {
-    "dev": "cd dev && cross-env NODE_OPTIONS=--no-deprecation next dev",
-    "build": "tsc",
-    "test": "cd test && jest --config=./jest.config.js",
-    "lint": "eslint src",
-    "payload": "cd dev && cross-env NODE_OPTIONS=--no-deprecation payload",
-    "dev:lint": "cd dev && cross-env NODE_OPTIONS=--no-deprecation next lint",
-    "generate:types": "payload generate:types",
-    "lint:fix": "eslint --fix --ext .ts,.tsx src",
-    "clean": "rimraf dist && rimraf dev/yarn.lock",
-    "prepublishOnly": "yarn clean && yarn build && cd dev && yarn test"
-  },
+  "description": "Payload plugin template",
   "author": "dev@payloadcms.com",
   "license": "MIT",
+  "files": [
+    "dist",
+    "LICENSE.md",
+    "README.md"
+  ],
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "build:all": "pnpm build && pnpm -C dev build",
+    "build:app": "pnpm -C dev build",
+    "clean": "rimraf {dist,*.tsbuildinfo,package}",
+    "copyfiles": "copyfiles -u 1 \"src/**/*.{html,css,scss,ttf,woff,woff2,eot,svg,jpg,png}\" dist/",
+    "dev": "pnpm -C dev dev",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "prepack": "pnpm prepublishOnly",
+    "prepublishOnly": "pnpm clean && pnpm build && pnpm copyfiles"
+  },
   "peerDependencies": {
-    "payload": "beta"
+    "next": "15.0.0-canary.173",
+    "payload": "^3.0.0-beta.111"
+  },
+  "dependencies": {
+    "@payloadcms/ui": "3.0.0-beta.111",
+    "react": "19.0.0-rc-3edc000d-20240926",
+    "react-dom": "19.0.0-rc-3edc000d-20240926"
   },
   "devDependencies": {
-    "@payloadcms/db-mongodb": "3.0.0-beta.10",
-    "@payloadcms/eslint-config": "^1",
-    "@payloadcms/next": "3.0.0-beta.10",
-    "@payloadcms/richtext-lexical": "3.0.0-beta.10",
-    "@payloadcms/ui": "3.0.0-beta.10",
-    "@swc/jest": "^0.2.36",
-    "@types/jest": "^29.5.11",
-    "@types/react": "^18.2.78",
-    "@typescript-eslint/eslint-plugin": "5.12.1",
-    "@typescript-eslint/parser": "5.12.1",
-    "cross-env": "^7.0.3",
-    "dotenv": "^8.2.0",
-    "eslint": "^8.19.0",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-import": "2.25.4",
-    "eslint-plugin-prettier": "^4.0.0",
-    "jest": "^29.7.0",
-    "next": "^14.3.0-canary",
-    "payload": "3.0.0-beta.10",
-    "prettier": "^2.7.1",
-    "react": "^18.0.0",
-    "sharp": "^0.33.3",
-    "typescript": "^5.4.2"
+    "@payloadcms/eslint-config": "3.0.0-beta.97",
+    "@types/node": "22.7.5",
+    "@types/react": "npm:types-react@19.0.0-rc.1",
+    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
+    "copyfiles": "^2.4.1",
+    "next": "15.0.0-canary.173",
+    "payload": "3.0.0-beta.111",
+    "react": "19.0.0-rc-3edc000d-20240926",
+    "react-dom": "19.0.0-rc-3edc000d-20240926",
+    "typescript": "5.5.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "@types/react": "npm:types-react@19.0.0-rc.1",
+      "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
+    }
+  },
+  "publishConfig": {
+    "main": "./dist/index.js",
+    "registry": "https://registry.npmjs.org/",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "import": "./dist/index.js",
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
+  "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "default": "./src/index.ts",
+      "types": "./src/index.ts"
+    }
   }
 }

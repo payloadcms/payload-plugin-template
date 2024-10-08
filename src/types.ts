@@ -1,11 +1,4 @@
-export interface PluginTypes {
-  /**
-   * Enable or disable plugin
-   * @default false
-   */
+export type MyPluginOptions = {
+  debug?: boolean
   enabled?: boolean
-}
-
-export interface NewCollectionTypes {
-  title: string
 }

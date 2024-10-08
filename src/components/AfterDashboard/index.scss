@@ -1,10 +1,20 @@
 .after-dashboard {
-  background-color: var(--theme-success-200);
-  border: 1px solid var(--theme-success-300);
-  color: var(--theme-success-500);
-  padding: var(--base);
+  border-top: 1px solid var(--theme-elevation-100);
+  padding-top: var(--base);
 
-  p {
-    margin-bottom: 0;
+  & > * {
+    margin: 0;
+
+    &:not(:last-child) {
+      margin-bottom: calc(var(--base) / 2);
+    }
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 }

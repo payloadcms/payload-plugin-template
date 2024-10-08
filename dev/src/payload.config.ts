@@ -1,25 +1,83 @@
-import { buildConfig } from 'payload/config'
-import path from 'path'
-import Users from './collections/Users'
-import Examples from './collections/Examples'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
-import { samplePlugin } from '../../src/index'
-import sharp from 'sharp'
+import path from 'path'
+import { buildConfig } from 'payload'
+import { fileURLToPath } from 'url'
+import { testEmailAdapter } from './emailAdapter'
+import { myPlugin } from 'payload-plugin-template'
+
+const filename = fileURLToPath(import.meta.url)
+const dirname = path.dirname(filename)
 
 export default buildConfig({
-  secret: process.env.PAYLOAD_SECRET || '',
   admin: {
-    user: Users.slug,
+    autoLogin: {
+      email: 'dev@payloadcms.com',
+      password: 'test',
+    },
+    user: 'users',
   },
-  editor: lexicalEditor({}),
-  collections: [Examples, Users],
-  typescript: {
-    outputFile: path.resolve(__dirname, 'payload-types.ts'),
-  },
-  plugins: [samplePlugin({ enabled: true })],
+  collections: [
+    {
+      slug: 'users',
+      auth: true,
+      fields: [],
+    },
+    {
+      slug: 'pages',
+      admin: {
+        useAsTitle: 'title',
+      },
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+        },
+        {
+          name: 'content',
+          type: 'richText',
+        },
+      ],
+    },
+    {
+      slug: 'media',
+      fields: [
+        {
+          name: 'text',
+          type: 'text',
+        },
+      ],
+      upload: true,
+    },
+  ],
   db: mongooseAdapter({
-    url: process.env.DATABASE_URI || '',
+    url: process.env.DATABASE_URI || 'mongodb://127.0.0.1/plugin-development',
   }),
-  sharp,
+  email: testEmailAdapter,
+  editor: lexicalEditor(),
+  secret: process.env.PAYLOAD_SECRET || 'SOME_SECRET',
+  typescript: {
+    outputFile: path.resolve(dirname, 'payload-types.ts'),
+  },
+  plugins: [
+    myPlugin({
+      debug: true,
+    }),
+  ],
+  async onInit(payload) {
+    const existingUsers = await payload.find({
+      collection: 'users',
+      limit: 1,
+    })
+
+    if (existingUsers.docs.length === 0) {
+      await payload.create({
+        collection: 'users',
+        data: {
+          email: 'dev@payloadcms.com',
+          password: 'test',
+        },
+      })
+    }
+  },
 })

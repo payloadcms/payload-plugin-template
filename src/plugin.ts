@@ -1,16 +1,13 @@
-import type { Config, Plugin } from 'payload/config'
+import type { Config } from 'payload'
 
-import { onInitExtension } from './onInitExtension'
-import type { PluginTypes } from './types'
-import AfterDashboard from './components/AfterDashboard'
-import newCollection from './newCollection'
+import type { MyPluginOptions } from './types.js'
 
-type PluginType = (pluginOptions: PluginTypes) => Plugin
+import { onInitExtension } from './lib/onInitExtension.js'
 
-export const samplePlugin =
-  (pluginOptions: PluginTypes): Plugin =>
-  incomingConfig => {
-    let config = { ...incomingConfig }
+export const myPlugin =
+  (pluginOptions: MyPluginOptions) =>
+  (incomingConfig: Config): Config => {
+    const config = { ...incomingConfig }
 
     config.admin = {
       ...(config.admin || {}),
@@ -20,32 +17,49 @@ export const samplePlugin =
       components: {
         ...(config.admin?.components || {}),
         // Add additional admin components here
-        afterDashboard: [...(config.admin?.components?.afterDashboard || []), AfterDashboard],
+        afterDashboard: [
+          '/components/AfterDashboard/index.js#AfterDashboard',
+          '/components/AfterDashboardClient/index.js#AfterDashboardClient',
+        ],
       },
     }
 
-    // If the plugin is disabled, return the config without modifying it
-    // The order of this check is important, we still want any webpack extensions to be applied even if the plugin is disabled
+    /**
+     * If the plugin is disabled, return the config without modifying it
+     *
+     * Be cautious when using this if your plugin adds new collections or fields
+     * as this could cause issues w/ Postgres migrations
+     */
     if (pluginOptions.enabled === false) {
       return config
     }
 
-    config.collections = [
-      ...(config.collections || []),
-      // Add additional collections here
-      newCollection, // delete this line to remove the example collection
-    ]
+    config.collections = (config.collections || []).map((collection) => {
+      const modifiedCollection = { ...collection }
+
+      // Make changes to the collection here
+
+      modifiedCollection.fields = (modifiedCollection.fields || []).map((field) => {
+        const newField = { ...field }
+
+        // Make changes to the fields here
+
+        return newField
+      })
+
+      return modifiedCollection
+    })
+
+    // Add additional collections here
 
     config.endpoints = [
       ...(config.endpoints || []),
       {
-        path: '/custom-endpoint',
-        method: 'get',
-        handler: async req => {
-          return new Response(JSON.stringify({ message: 'Here is a custom endpoint' }), {
-            status: 200,
-          })
+        handler: () => {
+          return Response.json({ message: 'Hello, world!' })
         },
+        method: 'get',
+        path: '/custom-endpoint',
       },
       // Add additional endpoints here
     ]
@@ -60,8 +74,10 @@ export const samplePlugin =
       // Add additional hooks here
     }
 
-    config.onInit = async payload => {
-      if (incomingConfig.onInit) await incomingConfig.onInit(payload)
+    config.onInit = async (payload) => {
+      if (incomingConfig.onInit) {
+        await incomingConfig.onInit(payload)
+      }
       // Add additional onInit code by using the onInitExtension function
       onInitExtension(pluginOptions, payload)
     }

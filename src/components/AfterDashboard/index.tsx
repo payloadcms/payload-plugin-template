@@ -1,18 +1,21 @@
-import React from 'react';
+import type { PayloadServerReactComponent, SanitizedConfig } from 'payload'
 
-import './index.scss';
+import React from 'react'
 
-const baseClass = 'after-dashboard';
+import './index.scss'
 
-const AfterDashboard: React.FC = () => {
+const baseClass = 'after-dashboard'
+
+export const AfterDashboard: PayloadServerReactComponent<
+  SanitizedConfig['admin']['components']['afterDashboard'][0]
+> = () => {
   return (
     <div className={baseClass}>
-      <h4>This component was added by the plugin</h4>
-      <h5>
-        Find it here: <code>src/components/afterDashboard</code>
-      </h5>
+      <h4>Test Config</h4>
+      <p>
+        The /test directory is used for create custom configurations and data seeding for developing
+        features, writing e2e and integration testing.
+      </p>
     </div>
   )
-};
-
-export default AfterDashboard;
+}
