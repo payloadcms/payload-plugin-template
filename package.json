@@ -10,13 +10,15 @@
     "LICENSE.md",
     "README.md"
   ],
-  "main": "./src/exports/index.ts",
-  "types": "./src/exports/index.ts",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "type": "module",
   "scripts": {
     "build": "tsc --project tsconfig.json",
+    "build:all": "pnpm build && pnpm -C dev build",
     "clean": "rimraf {dist,*.tsbuildinfo,package}",
     "copyfiles": "copyfiles -u 1 \"src/**/*.{html,css,scss,ttf,woff,woff2,eot,svg,jpg,png}\" dist/",
+    "dev": "pnpm -C dev dev",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prepack": "pnpm prepublishOnly",
@@ -42,23 +44,29 @@
     "react-dom": "19.0.0-rc-3edc000d-20240926",
     "typescript": "5.5.3"
   },
+  "pnpm": {
+    "overrides": {
+      "@types/react": "npm:types-react@19.0.0-rc.1",
+      "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
+    }
+  },
   "publishConfig": {
     "main": "./dist/index.js",
     "registry": "https://registry.npmjs.org/",
     "types": "./dist/index.d.ts",
     "exports": {
       ".": {
-        "import": "./dist/exports/index.js",
-        "types": "./dist/exports/index.d.ts",
-        "default": "./dist/exports/index.js"
+        "import": "./dist/index.js",
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
       }
     }
   },
   "exports": {
     ".": {
-      "import": "./src/exports/index.ts",
-      "default": "./src/exports/index.ts",
-      "types": "./src/exports/index.ts"
+      "import": "./src/index.ts",
+      "default": "./src/index.ts",
+      "types": "./src/index.ts"
     }
   }
 }

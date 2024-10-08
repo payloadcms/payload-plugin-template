@@ -4,22 +4,17 @@
     "declarationDir": "./dist",
     "outDir": "./dist",
     "rootDir": "./src",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "target": "es5",
     "allowJs": true,
     "jsx": "preserve",
-    "module": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "sourceMap": true,
     "esModuleInterop": true,
     "declaration": true,
     "skipLibCheck": true,
     "strict": true
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src/**/*"]
 }
