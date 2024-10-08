@@ -50,12 +50,12 @@ jobs:
       - run: pnpm install
 
       - run: pnpm build
-        description: Build package
+        name: Build package
         env:
           DO_NOT_TRACK: 1 # Disable Turbopack telemetry
 
       - run: pnpm build:app
-        description: Build dev dir app
+        name: Build dev dir app
 
       - name: Cache build
         uses: actions/cache@v4
