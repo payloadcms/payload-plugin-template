@@ -16,6 +16,7 @@
   "scripts": {
     "build": "tsc --project tsconfig.json",
     "build:all": "pnpm build && pnpm -C dev build",
+    "build:app": "pnpm -C dev build",
     "clean": "rimraf {dist,*.tsbuildinfo,package}",
     "copyfiles": "copyfiles -u 1 \"src/**/*.{html,css,scss,ttf,woff,woff2,eot,svg,jpg,png}\" dist/",
     "dev": "pnpm -C dev dev",
