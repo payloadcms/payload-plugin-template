@@ -9,6 +9,7 @@ on:
   push:
     branches:
       - main
+      - beta
 
 env:
   NODE_VERSION: 22.6.0
